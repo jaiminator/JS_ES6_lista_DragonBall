@@ -18,11 +18,9 @@ fetch("https://dragonball-api.com/api/characters?limit=1000")
                 deletedAt,
             } = item;
             cajaLista.innerHTML +=
-                "<p>" +
-                id +
-                "</p><p>" +
+                "<div class='cajaPersonaje'><h1>" +
                 name +
-                "</p><p>" +
+                "</h1><p>" +
                 ki +
                 "</p><p>" +
                 maxKi +
@@ -34,11 +32,10 @@ fetch("https://dragonball-api.com/api/characters?limit=1000")
                 description +
                 "</p><img src=" +
                 image +
-                "></><p>" +
+                "><p>" +
                 affiliation +
                 "</p><p>" +
                 deletedAt +
-                " </p>";
-            ("</p><p>");
+                "</p></div>";
         });
     });
