@@ -20,21 +20,21 @@ fetch("https://dragonball-api.com/api/characters?limit=1000")
             cajaLista.innerHTML +=
                 "<div class='cajaPersonaje'><h1>" +
                 name +
-                "</h1><p>" +
-                ki +
-                "</p><p>" +
-                maxKi +
-                "</p><p>" +
-                race +
-                "</p><p>" +
-                gender +
-                "</p><p>" +
-                description +
-                "</p><img src=" +
+                "</h1><img src=" +
                 image +
-                "><p>" +
+                "><p><b>KI:</b> " +
+                ki +
+                "</p><p><b>MAX KI:</b> " +
+                maxKi +
+                "</p><p><b>RACE:</b> " +
+                race +
+                "</p><p><b>GENDER:</b> " +
+                gender +
+                "</p><p><b>DESCRIPTION:</b> " +
+                description +
+                "</p><p><b>AFFILIATION:</b> " +
                 affiliation +
-                "</p><p>" +
+                "</p><p><b>DELETED AT:</b> " +
                 deletedAt +
                 "</p></div>";
         });
