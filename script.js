@@ -1,6 +1,7 @@
 const cajaLista = document.getElementById("listaDragonBall");
 
-fetch("https://dragonball-api.com/api/characters?limit=1000")
+function mostrarPersonajes() {
+    fetch("https://dragonball-api.com/api/characters?limit=1000")
     .then((response) => response.json())
     .then((listaPersonajes) => {
         listaPersonajes.items.forEach((personaje) => {
@@ -19,4 +20,9 @@ fetch("https://dragonball-api.com/api/characters?limit=1000")
                 description +
                 "</p></div>";
         });
-    });
+    
+    })
+.catch(error => console.log("ERROR AL CARGAR DATOS",error))
+}
+
+mostrarPersonajes()
