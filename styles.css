@@ -1,11 +1,23 @@
 body{
     font-family: 'Segoe UI';
     background-color: #1c4595;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 .titulo{
     text-align: center;
     background-color: #e76a24;
     border: 4px solid black;
+}
+.cajaBusqueda{
+    text-align: center;
+}
+#inputBusqueda, #botonBusqueda{
+    padding: 10px;
+    background-color: #e76a24;
+    font-weight: bold;
+    font-size: 1.4em;
 }
 #listaDragonBall{
     display: flex;
