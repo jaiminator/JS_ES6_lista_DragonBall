@@ -13,7 +13,7 @@ body{
 .cajaBusqueda{
     text-align: center;
 }
-#inputBusqueda, #botonBusqueda{
+button,#inputBusqueda, #botonBusqueda{
     padding: 10px;
     background-color: #e76a24;
     font-weight: bold;
@@ -43,6 +43,7 @@ img:hover{
     max-width: 250px;
     max-height: 250px;
 }
+
 @media (max-width:810px) {
     .cajaPersonaje{
         width: auto;
