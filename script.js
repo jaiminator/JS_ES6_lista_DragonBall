@@ -1,6 +1,10 @@
 //OBTENEMOS LA CAJA-LISTA CON LOS PERSONAJES
 const cajaLista = document.getElementById("listaDragonBall");
 
+const inputBusqueda = document.getElementById("inputBusqueda");
+const botonBusqueda = document.getElementById("botonBusqueda");
+botonBusqueda.addEventListener("click", buscarPersonajes);
+
 //OBTENEMOS Y AÑADIMOS EVENTOS A LOS BOTONES DE PAGINAGIÓN
 const previousButton = document.getElementById("previousButton");
 previousButton.addEventListener("click", paginaAnterior);
@@ -61,7 +65,7 @@ function paginaAnterior() {
         .catch((error) => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error));
 }
 
-//MOSTRAMOS LA LISTA CON LOS 10 PERSONAJES ANTERIORES
+//MOSTRAMOS LA LISTA CON LOS 10 PERSONAJES SIGUIENTES
 function paginaSiguiente() {
     fetch(nextButton.getAttribute("href"))  //SACAMOS EL VALOR 'href' DEL BOTÓN SIGUIENTE Y LE HACEMOS PETICIÓN
         .then((response) => response.json())
@@ -92,4 +96,35 @@ function paginaSiguiente() {
         .catch((error) => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error));
 }
 
+//MOSTRAMOS LA LISTA DE PERSONAJES SEGÚN LO INTRODUCIDO EN EL CUADRO DE BÚSQUEDA
+function buscarPersonajes() {
+    fetch(
+        "https://dragonball-api.com/api/characters?name=" + inputBusqueda.value
+    )
+        .then((response) => response.json())
+        .then((personajesFilter) => {
+            if (inputBusqueda.value != "") {
+                previousButton.setAttribute("disabled", "true");
+                nextButton.setAttribute("disabled", "true");
+                cajaLista.innerHTML = "";
+                personajesFilter.forEach((personajes) => {
+                    const { name, description, image } = personajes;
+                    cajaLista.innerHTML +=
+                        "<div class='cajaPersonaje'><h1>" +
+                        name +
+                        "</h1><img src=" +
+                        image +
+                        "><p><b>DESCRIPCIÓN:</b> " +
+                        description +
+                        "</p></div>";
+                });
+            } else {
+                cajaLista.innerHTML = "";
+                previousButton.setAttribute("disabled", "true");
+                nextButton.removeAttribute("disabled");
+                mostrarPersonajes();
+            }
+        })
+        .catch((error) => console.log("ERROR AL OBTENER PERSONAJES FILTRADOS", error));
+}
 mostrarPersonajes(); //LLAMAMOS A ESTA FUNCIÓN AL INICIAR LA PÁGINA WEB

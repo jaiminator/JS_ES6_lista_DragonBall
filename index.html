@@ -13,10 +13,14 @@
     </head>
     <body>
         <h1 class="titulo">PERSONAJES DRAGON BALL</h1>
-        <p class="paginacion" style="text-align: center">
-            <button id="previousButton" type="submit">< ANTERIOR</button>
-            <button id="nextButton" type="submit">SIGUIENTE ></button>
-        </p>
+        <div class="paginacion">
+            <button id="previousButton" type="submit"><< ANTERIOR</button>
+            <div class="cajaBusqueda">
+                <input type="search" name="busqueda" id="inputBusqueda" placeholder="..." autofocus>
+                <button id="botonBusqueda" type="submit">BUSCAR PERSONAJES</button>
+            </div>
+            <button id="nextButton" type="submit">SIGUIENTE >></button>
+        </div>
         <div id="listaDragonBall" class="listaDragonBall"></div>
         <script src="script.js"></script>
     </body>

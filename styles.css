@@ -10,10 +10,16 @@ body{
     background-color: #e76a24;
     border: 4px solid black;
 }
+.paginacion{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
 .cajaBusqueda{
     text-align: center;
+    font-size: 0.8em;
 }
-button,#inputBusqueda, #botonBusqueda{
+button,#inputBusqueda,#botonBusqueda{
     padding: 10px;
     background-color: #e76a24;
     font-weight: bold;
