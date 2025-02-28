@@ -13,15 +13,30 @@
     </head>
     <body>
         <h1 class="titulo">PERSONAJES DRAGON BALL</h1>
-        <div class="paginacion">
-            <button id="previousButton" type="submit"><< ANTERIOR</button>
-            <div class="cajaBusqueda">
-                <input type="search" name="busqueda" id="inputBusqueda" placeholder="..." autofocus>
-                <button id="botonBusqueda" type="submit">BUSCAR PERSONAJES</button>
+        <main class="main-container">
+            <div class="filterMenu">
+                <h1>MENÚ FILTROS</h1>
+                <p>Gender</p>
+                <select name="planeta" id="selectGender"></select>
+                <p>Race</p>
+                <select name="raza" id="selectRace"></select>
             </div>
-            <button id="nextButton" type="submit">SIGUIENTE >></button>
-        </div>
-        <div id="listaDragonBall" class="listaDragonBall"></div>
+            <div class="main-personajes">
+                <div class="search">
+                    <div class="cajaBusqueda">
+                        <input type="search" name="busqueda" id="inputBusqueda" placeholder="..." autofocus>
+                        <button id="botonBusqueda" type="submit">BUSCAR PERSONAJES</button>
+                    </div>
+                </div>
+                
+                <div id="listaDragonBall" class="listaDragonBall"></div>
+                <div class="paginacion">
+                    <button id="previousButton" type="submit"><< ANTERIOR</button>
+                    <button id="nextButton" type="submit">SIGUIENTE >></button>
+                </div>
+            </div>
+        </main>
+        
         <script src="script.js"></script>
     </body>
 </html>

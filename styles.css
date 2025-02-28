@@ -1,57 +1,83 @@
-body{
-    font-family: 'Segoe UI';
+body {
+    font-family: "Segoe UI";
     background-color: #1c4595;
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
-.titulo{
+.titulo {
     text-align: center;
     background-color: #e76a24;
     border: 4px solid black;
 }
-.paginacion{
+.main-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: space-around;
+}
+.filterMenu {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-top: 65px;
+    background-color: #fbbc42;
+    border: 4px solid black;
+    border-radius: 20px;
+    max-height: max-content;
+    width: auto;
+}
+.main-personajes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 800px;
+}
+.paginacion,
+.search {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
-.cajaBusqueda{
+.cajaBusqueda {
     text-align: center;
     font-size: 0.8em;
 }
-button,#inputBusqueda,#botonBusqueda{
+button,
+#inputBusqueda,
+#botonBusqueda {
     padding: 10px;
     background-color: #e76a24;
     font-weight: bold;
     font-size: 1.4em;
 }
-#listaDragonBall{
+#listaDragonBall {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-around;
     gap: 20px;
+    padding: 10px;
 }
-.cajaPersonaje{
+.cajaPersonaje {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px;
-    width: 350px;
+    width: 320px;
     border: 4px solid black;
     border-radius: 20px;
     background-color: #fbbc42;
 }
-img{
+img {
     max-width: 200px;
     max-height: 200px;
 }
-img:hover{
+img:hover {
     max-width: 250px;
     max-height: 250px;
 }
-
-@media (max-width:810px) {
-    .cajaPersonaje{
+@media (max-width: 852px) {
+    .cajaPersonaje {
         width: auto;
     }
 }

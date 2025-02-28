@@ -11,6 +11,21 @@ previousButton.addEventListener("click", paginaAnterior);
 const nextButton = document.getElementById("nextButton");
 nextButton.addEventListener("click", paginaSiguiente);
 
+const selectGender = document.getElementById("selectGender");
+const selectRace = document.getElementById("selectRace");
+
+function mostrarOpcionesFiltros() {
+    fetch("https://dragonball-api.com/api/characters")
+    .then((response) => response.json()) 
+    .then((opciones) => {
+        opciones.items.forEach((opcion) => {
+            console.log(opcion.gender);
+            selectGender.innerHTML += "<option>"+opcion.gender+"</option>";
+            selectRace.innerHTML += "<option>"+opcion.race+"</option>";
+        })
+    })
+}
+
 //MOSTRAMOS LA LISTA INICIAL CON LOS 10 PRIMEROS PERSONAJES
 function mostrarPersonajes() {
     fetch("https://dragonball-api.com/api/characters?page=1&limit=10") //HACEMOS PETICIÓN API_FETCH A UNA URL
@@ -127,4 +142,5 @@ function buscarPersonajes() {
         })
         .catch((error) => console.log("ERROR AL OBTENER PERSONAJES FILTRADOS", error));
 }
+mostrarOpcionesFiltros();
 mostrarPersonajes(); //LLAMAMOS A ESTA FUNCIÓN AL INICIAR LA PÁGINA WEB
