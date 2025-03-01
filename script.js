@@ -3,7 +3,7 @@ const cajaLista = document.getElementById("listaDragonBall");
 
 const inputBusqueda = document.getElementById("inputBusqueda");
 const botonBusqueda = document.getElementById("botonBusqueda");
-botonBusqueda.addEventListener("click", buscarPersonajes);
+inputBusqueda.addEventListener("keyup", buscarPersonajes);
 
 //OBTENEMOS Y AÑADIMOS EVENTOS A LOS BOTONES DE PAGINAGIÓN
 const previousButton = document.getElementById("previousButton");
@@ -11,17 +11,31 @@ previousButton.addEventListener("click", paginaAnterior);
 const nextButton = document.getElementById("nextButton");
 nextButton.addEventListener("click", paginaSiguiente);
 
+//OBTENEMOS LOS SELECT Y EL BOTÓN DEL MENÚ DE FILTROS
 const selectGender = document.getElementById("selectGender");
 const selectRace = document.getElementById("selectRace");
+const buttonFilter = document.getElementById("buttonFilter");
+buttonFilter.addEventListener("click", mostrarPersonajesFiltrados);
 
-function mostrarOpcionesFiltros() {
-    fetch("https://dragonball-api.com/api/characters")
-    .then((response) => response.json()) 
-    .then((opciones) => {
-        opciones.items.forEach((opcion) => {
-            console.log(opcion.gender);
-            selectGender.innerHTML += "<option>"+opcion.gender+"</option>";
-            selectRace.innerHTML += "<option>"+opcion.race+"</option>";
+function mostrarPersonajesFiltrados() {
+    const encoredRace = encodeURIComponent(selectRace.value);
+
+    fetch("https://dragonball-api.com/api/characters?gender="+selectGender.value+"&race="+encoredRace)
+    .then((response) => response.json())
+    .then((filtrados) => {
+        previousButton.setAttribute("disabled", "true");
+        nextButton.setAttribute("disabled", "true");
+        cajaLista.innerHTML = "";
+        filtrados.forEach((filtro) => {
+            const { name, description, image } = filtro;
+                cajaLista.innerHTML +=
+                    "<div class='cajaPersonaje'><h1>" +
+                    name +
+                    "</h1><img src=" +
+                    image +
+                    "><p><b>DESCRIPCIÓN:</b> " +
+                    description +
+                    "</p></div>"; 
         })
     })
 }
@@ -34,7 +48,6 @@ function mostrarPersonajes() {
         
         previousButton.setAttribute("disabled", "true");    //ATRIBUTO 'disabled' AL BOTÓN ANTERIOR
         nextButton.setAttribute("href", listaPersonajes.links.next); //ATRIBUTO 'href' AL BOTÓN SIGUIENTE
-        
             listaPersonajes.items.forEach((personaje) => {     //RECORREMOS PARA CADA 'personaje' DE 'listaPersonajes'
                 const { name, description, image } = personaje; //DESTRUCTURACIÓN DE PERSONAJE
                 cajaLista.innerHTML +=      //INSERTAMOS ELEMENTOS HTML A LA CAJA-LISTA DE PERSONAJES
@@ -142,5 +155,4 @@ function buscarPersonajes() {
         })
         .catch((error) => console.log("ERROR AL OBTENER PERSONAJES FILTRADOS", error));
 }
-mostrarOpcionesFiltros();
 mostrarPersonajes(); //LLAMAMOS A ESTA FUNCIÓN AL INICIAR LA PÁGINA WEB
