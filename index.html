@@ -18,12 +18,14 @@
                 <h1>FILTER MENU:</h1>
                 <label for="selectGender"><b>Gender:</b></label>
                 <select name="gender" id="selectGender">
+                    <option value="">---</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                     <option value="unknown">Unknown</option>
                 </select>
                 <label for="selectRace"><b>Race:</b></label>
                 <select name="race" id="selectRace">
+                    <option value="">---</option>
                     <option value="saiyan">Saiyan</option>
                     <option value="namekian">Namekian</option>
                     <option value="human">Human</option>
@@ -39,12 +41,13 @@
                     <option value="nucleico">Nucleico</option>
                 </select>
                 <button id="buttonFilter" type="submit">APPLY FILTERS</button>
+                <button id="buttonDeleteFilter" type="submit">RESET FILTERS</button>
             </div>
             <div class="main-personajes">
                 <div class="search">
                     <div class="cajaBusqueda">
                         <h2>SEARCH CHARACTERS</h2>
-                        <input type="search" name="busqueda" id="inputBusqueda" placeholder="..." autofocus>
+                        <input type="search" name="busqueda" id="inputBusqueda" placeholder="...">
                     </div>
                 </div>
                 

@@ -11,58 +11,104 @@ previousButton.addEventListener("click", paginaAnterior);
 const nextButton = document.getElementById("nextButton");
 nextButton.addEventListener("click", paginaSiguiente);
 
-//OBTENEMOS LOS SELECT Y EL BOTÓN DEL MENÚ DE FILTROS
+//OBTENEMOS LOS SELECT DEL MENÚ DE FILTROS
 const selectGender = document.getElementById("selectGender");
 const selectRace = document.getElementById("selectRace");
+//OBTENEMOS LOS BOTONES  DEL MENÚ DE FILTROS Y AÑADIMOS EVENTOS
 const buttonFilter = document.getElementById("buttonFilter");
 buttonFilter.addEventListener("click", mostrarPersonajesFiltrados);
+const buttonDeleteFilter = document.getElementById("buttonDeleteFilter");
+buttonDeleteFilter.addEventListener("click", mostrarPersonajesInicial);
 
-function mostrarPersonajesFiltrados() {
-    const encoredRace = encodeURIComponent(selectRace.value);
-
-    fetch("https://dragonball-api.com/api/characters?gender="+selectGender.value+"&race="+encoredRace)
-    .then((response) => response.json())
-    .then((filtrados) => {
-        previousButton.setAttribute("disabled", "true");
-        nextButton.setAttribute("disabled", "true");
-        cajaLista.innerHTML = "";
-        filtrados.forEach((filtro) => {
-            const { name, description, image } = filtro;
-                cajaLista.innerHTML +=
-                    "<div class='cajaPersonaje'><h1>" +
-                    name +
-                    "</h1><img src=" +
-                    image +
-                    "><p><b>DESCRIPCIÓN:</b> " +
-                    description +
-                    "</p></div>"; 
-        })
-    })
+//MUESTRA GENERAL DE CONTENIDO
+//MOSTRAMOS EL CONTENIDO DE LOS PERSONAJES MEDIANTE EL PARÁMETRO data
+function mostrarListaPersonajes(data) {
+    const { name, description, image } = data;
+        cajaLista.innerHTML +=
+            "<div class='cajaPersonaje'><h1>" +
+            name +
+            "</h1><img src=" +
+            image +
+            "><p><b>DESCRIPCIÓN:</b> " +
+            description +
+            "</p></div>"; 
 }
 
 //MOSTRAMOS LA LISTA INICIAL CON LOS 10 PRIMEROS PERSONAJES
-function mostrarPersonajes() {
+function mostrarPersonajesInicial() {
     fetch("https://dragonball-api.com/api/characters?page=1&limit=10") //HACEMOS PETICIÓN API_FETCH A UNA URL
     .then((response) => response.json())    //OBTENEMOS LA RESPUESTA Y LA DEVOLVEMOS EN FORMATO JSON
     .then((listaPersonajes) => {    //MANIPULAMOS LOS DATOS DE LA RESPUESTA OBTENIDA
-        
-        previousButton.setAttribute("disabled", "true");    //ATRIBUTO 'disabled' AL BOTÓN ANTERIOR
+        cajaLista.innerHTML = "";
+        previousButton.setAttribute("disabled", "true");    //ATRIBUTO 'disabled' AL BOTÓN 
+        nextButton.removeAttribute("disabled");
+        selectGender.value = "";
+        selectRace.value = "";
         nextButton.setAttribute("href", listaPersonajes.links.next); //ATRIBUTO 'href' AL BOTÓN SIGUIENTE
             listaPersonajes.items.forEach((personaje) => {     //RECORREMOS PARA CADA 'personaje' DE 'listaPersonajes'
-                const { name, description, image } = personaje; //DESTRUCTURACIÓN DE PERSONAJE
-                cajaLista.innerHTML +=      //INSERTAMOS ELEMENTOS HTML A LA CAJA-LISTA DE PERSONAJES
-                    "<div class='cajaPersonaje'><h1>" +
-                    name +
-                    "</h1><img src=" +
-                    image +
-                    "><p><b>DESCRIPCIÓN:</b> " +
-                    description +
-                    "</p></div>";
+                mostrarListaPersonajes(personaje);
             });
         })
         .catch((error) => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error)); //MANEJO DE POSIBLES ERRORES
 }
 
+//MENÚ FILTROS
+//MOSTRAMOS LOS PERSONAJES FILTADROS SEGÚN LAS OPCIONES DEL MENÚ FILTRO
+function mostrarPersonajesFiltrados() {
+    const encoredRace = encodeURIComponent(selectRace.value);
+    let filters = ""
+    if (selectGender.value) {
+        filters += "&gender="+selectGender.value;
+    }
+    if (selectRace.value) {
+        filters += "&race="+encoredRace;
+    }
+    fetch("https://dragonball-api.com/api/characters?"+filters)
+        .then((response) => response.json())
+        .then((data) => {
+            cajaLista.innerHTML = "";
+            let personajes = [];
+            if(data.items){
+                personajes = data.items;
+                nextButton.removeAttribute("disabled");
+            } else {
+                personajes = data;
+                previousButton.setAttribute("disabled", "true");
+                nextButton.setAttribute("disabled", "true");
+            }
+            personajes.forEach((data) => {
+                mostrarListaPersonajes(data);
+            })
+        })
+        .catch((error => console.log("ERROR AL OBTENER PERSONAJES FILTRADOS",error)))
+}
+
+//BÚSQUEDA
+//MOSTRAMOS LA LISTA DE PERSONAJES SEGÚN LO INTRODUCIDO EN EL CUADRO DE BÚSQUEDA
+function buscarPersonajes() {
+    fetch(
+        "https://dragonball-api.com/api/characters?name=" + inputBusqueda.value
+    )
+        .then((response) => response.json())
+        .then((data) => {
+            if (inputBusqueda.value != "") {
+                previousButton.setAttribute("disabled", "true");
+                nextButton.setAttribute("disabled", "true");
+                cajaLista.innerHTML = "";
+                data.forEach((data) => {
+                    mostrarListaPersonajes(data);
+                });
+            } else {
+                cajaLista.innerHTML = "";
+                previousButton.setAttribute("disabled", "true");
+                nextButton.removeAttribute("disabled");
+                mostrarPersonajesInicial();
+            }
+        })
+        .catch((error) => console.log("ERROR AL OBTENER LOS PERSONAJES FILTRADOS", error));
+}
+
+//PAGINACIÓN
 //MOSTRAMOS LA LISTA CON LOS 10 PERSONAJES ANTERIORES
 function paginaAnterior() {
     fetch(previousButton.getAttribute("href")) //SACAMOS EL VALOR 'href' DEL BOTÓN ANTERIOR Y LE HACEMOS PETICIÓN
@@ -79,15 +125,7 @@ function paginaAnterior() {
 
             cajaLista.innerHTML = "";
             listaPersonajes.items.forEach((personaje) => {
-                const { name, description, image } = personaje;
-                cajaLista.innerHTML +=
-                    "<div class='cajaPersonaje'><h1>" +
-                    name +
-                    "</h1><img src=" +
-                    image +
-                    "><p><b>DESCRIPCIÓN:</b> " +
-                    description +
-                    "</p></div>";
+                mostrarListaPersonajes(personaje);
             });
         })
         .catch((error) => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error));
@@ -110,49 +148,10 @@ function paginaSiguiente() {
 
             cajaLista.innerHTML = "";
             listaPersonajes.items.forEach((personaje) => {
-                const { name, description, image } = personaje;
-                cajaLista.innerHTML +=
-                    "<div class='cajaPersonaje'><h1>" +
-                    name +
-                    "</h1><img src=" +
-                    image +
-                    "><p><b>DESCRIPCIÓN:</b> " +
-                    description +
-                    "</p></div>";
+                mostrarListaPersonajes(personaje);
             });
         })
         .catch((error) => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error));
 }
 
-//MOSTRAMOS LA LISTA DE PERSONAJES SEGÚN LO INTRODUCIDO EN EL CUADRO DE BÚSQUEDA
-function buscarPersonajes() {
-    fetch(
-        "https://dragonball-api.com/api/characters?name=" + inputBusqueda.value
-    )
-        .then((response) => response.json())
-        .then((personajesFilter) => {
-            if (inputBusqueda.value != "") {
-                previousButton.setAttribute("disabled", "true");
-                nextButton.setAttribute("disabled", "true");
-                cajaLista.innerHTML = "";
-                personajesFilter.forEach((personajes) => {
-                    const { name, description, image } = personajes;
-                    cajaLista.innerHTML +=
-                        "<div class='cajaPersonaje'><h1>" +
-                        name +
-                        "</h1><img src=" +
-                        image +
-                        "><p><b>DESCRIPCIÓN:</b> " +
-                        description +
-                        "</p></div>";
-                });
-            } else {
-                cajaLista.innerHTML = "";
-                previousButton.setAttribute("disabled", "true");
-                nextButton.removeAttribute("disabled");
-                mostrarPersonajes();
-            }
-        })
-        .catch((error) => console.log("ERROR AL OBTENER PERSONAJES FILTRADOS", error));
-}
-mostrarPersonajes(); //LLAMAMOS A ESTA FUNCIÓN AL INICIAR LA PÁGINA WEB
+mostrarPersonajesInicial(); //LLAMAMOS A ESTA FUNCIÓN AL INICIAR LA PÁGINA WEB
