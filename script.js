@@ -24,15 +24,27 @@ buttonDeleteFilter.addEventListener("click", mostrarPersonajesInicial);
 //MUESTRA GENERAL DE CONTENIDO
 //MOSTRAMOS EL CONTENIDO DE LOS PERSONAJES MEDIANTE EL PARÁMETRO data
 function mostrarListaPersonajes(data) {
-    const { name, description, image } = data;
+    const { id, name, description, image } = data;
         cajaLista.innerHTML +=
             "<div class='cajaPersonaje'><h1>" +
             name +
-            "</h1><img src=" +
+            "</h1><img onclick=infoPersonaje("+id+") src=" +
             image +
             "><p><b>DESCRIPCIÓN:</b> " +
             description +
             "</p></div>"; 
+}
+
+function infoPersonaje(id) {
+    fetch("https://dragonball-api.com/api/characters/"+id)
+        .then(response => response.json())
+        .then(data => {
+            const dialog = document.getElementById("dialog"); 
+            const {name} = data.originPlanet;
+            dialog.innerHTML = "<p>ORIGIN PLANET: "+name+"</p><button onclick='dialog.close()'>Close</button>";
+            dialog.showModal(); 
+        })
+        .catch(error => console.log('ERROR AL OBTENER LA INFO DEL PERSONAJE', error));
 }
 
 //MOSTRAMOS LA LISTA INICIAL CON LOS 10 PRIMEROS PERSONAJES
