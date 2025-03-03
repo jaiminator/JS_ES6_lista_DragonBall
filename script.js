@@ -14,6 +14,7 @@ nextButton.addEventListener("click", paginaSiguiente);
 //OBTENEMOS LOS SELECT DEL MENÚ DE FILTROS
 const selectGender = document.getElementById("selectGender");
 const selectRace = document.getElementById("selectRace");
+const selectAffiliation = document.getElementById("selectAffiliation");
 //OBTENEMOS LOS BOTONES  DEL MENÚ DE FILTROS Y AÑADIMOS EVENTOS
 const buttonFilter = document.getElementById("buttonFilter");
 buttonFilter.addEventListener("click", mostrarPersonajesFiltrados);
@@ -37,35 +38,39 @@ function mostrarListaPersonajes(data) {
 //MOSTRAMOS LA LISTA INICIAL CON LOS 10 PRIMEROS PERSONAJES
 function mostrarPersonajesInicial() {
     fetch("https://dragonball-api.com/api/characters?page=1&limit=10") //HACEMOS PETICIÓN API_FETCH A UNA URL
-    .then((response) => response.json())    //OBTENEMOS LA RESPUESTA Y LA DEVOLVEMOS EN FORMATO JSON
-    .then((listaPersonajes) => {    //MANIPULAMOS LOS DATOS DE LA RESPUESTA OBTENIDA
+    .then(response => response.json())    //OBTENEMOS LA RESPUESTA Y LA DEVOLVEMOS EN FORMATO JSON
+    .then(listaPersonajes => {    //MANIPULAMOS LOS DATOS DE LA RESPUESTA OBTENIDA
         cajaLista.innerHTML = "";
         previousButton.setAttribute("disabled", "true");    //ATRIBUTO 'disabled' AL BOTÓN 
         nextButton.removeAttribute("disabled");
         selectGender.value = "";
         selectRace.value = "";
         nextButton.setAttribute("href", listaPersonajes.links.next); //ATRIBUTO 'href' AL BOTÓN SIGUIENTE
-            listaPersonajes.items.forEach((personaje) => {     //RECORREMOS PARA CADA 'personaje' DE 'listaPersonajes'
+            listaPersonajes.items.forEach(personaje => {     //RECORREMOS PARA CADA 'personaje' DE 'listaPersonajes'
                 mostrarListaPersonajes(personaje);
             });
         })
-        .catch((error) => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error)); //MANEJO DE POSIBLES ERRORES
+        .catch(error => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error)); //MANEJO DE POSIBLES ERRORES
 }
 
 //MENÚ FILTROS
 //MOSTRAMOS LOS PERSONAJES FILTADROS SEGÚN LAS OPCIONES DEL MENÚ FILTRO
 function mostrarPersonajesFiltrados() {
     const encoredRace = encodeURIComponent(selectRace.value);
-    let filters = ""
+    const encoredAffiliation = encodeURIComponent(selectAffiliation.value);
+    let filters = "";
     if (selectGender.value) {
         filters += "&gender="+selectGender.value;
     }
     if (selectRace.value) {
         filters += "&race="+encoredRace;
+    } 
+    if (selectAffiliation.value) {
+        filters += "&affiliation="+encoredAffiliation;
     }
     fetch("https://dragonball-api.com/api/characters?"+filters)
-        .then((response) => response.json())
-        .then((data) => {
+        .then(response => response.json())
+        .then(data => {
             cajaLista.innerHTML = "";
             let personajes = [];
             if(data.items){
@@ -76,11 +81,11 @@ function mostrarPersonajesFiltrados() {
                 previousButton.setAttribute("disabled", "true");
                 nextButton.setAttribute("disabled", "true");
             }
-            personajes.forEach((data) => {
+            personajes.forEach(data => {
                 mostrarListaPersonajes(data);
             })
         })
-        .catch((error => console.log("ERROR AL OBTENER PERSONAJES FILTRADOS",error)))
+        .catch(error => console.log("ERROR AL OBTENER PERSONAJES FILTRADOS",error))
 }
 
 //BÚSQUEDA
@@ -89,13 +94,13 @@ function buscarPersonajes() {
     fetch(
         "https://dragonball-api.com/api/characters?name=" + inputBusqueda.value
     )
-        .then((response) => response.json())
-        .then((data) => {
+        .then(response => response.json())
+        .then(data => {
             if (inputBusqueda.value != "") {
                 previousButton.setAttribute("disabled", "true");
                 nextButton.setAttribute("disabled", "true");
                 cajaLista.innerHTML = "";
-                data.forEach((data) => {
+                data.forEach(data => {
                     mostrarListaPersonajes(data);
                 });
             } else {
@@ -105,15 +110,15 @@ function buscarPersonajes() {
                 mostrarPersonajesInicial();
             }
         })
-        .catch((error) => console.log("ERROR AL OBTENER LOS PERSONAJES FILTRADOS", error));
+        .catch(error => console.log("ERROR AL OBTENER LOS PERSONAJES FILTRADOS", error));
 }
 
 //PAGINACIÓN
 //MOSTRAMOS LA LISTA CON LOS 10 PERSONAJES ANTERIORES
 function paginaAnterior() {
     fetch(previousButton.getAttribute("href")) //SACAMOS EL VALOR 'href' DEL BOTÓN ANTERIOR Y LE HACEMOS PETICIÓN
-        .then((response) => response.json())
-        .then((listaPersonajes) => {
+        .then(response => response.json())
+        .then(listaPersonajes => {
             if (listaPersonajes.meta.currentPage == 1) { //SI LA PÁGINA ACTUAL ES 1...
                 previousButton.setAttribute("disabled", "true");    //...SE DESHABILITARÁ EL BOTÓN ANTERIOR
             }
@@ -124,18 +129,18 @@ function paginaAnterior() {
             nextButton.setAttribute("href", listaPersonajes.links.next);
 
             cajaLista.innerHTML = "";
-            listaPersonajes.items.forEach((personaje) => {
+            listaPersonajes.items.forEach(personaje => {
                 mostrarListaPersonajes(personaje);
             });
         })
-        .catch((error) => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error));
+        .catch(error => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error));
 }
 
 //MOSTRAMOS LA LISTA CON LOS 10 PERSONAJES SIGUIENTES
 function paginaSiguiente() {
     fetch(nextButton.getAttribute("href"))  //SACAMOS EL VALOR 'href' DEL BOTÓN SIGUIENTE Y LE HACEMOS PETICIÓN
-        .then((response) => response.json())
-        .then((listaPersonajes) => {
+        .then(response => response.json())
+        .then(listaPersonajes => {
 
             if (listaPersonajes.meta.currentPage == 6) {    //SI LA PÁGINA ACTUAL ES 6...
                 nextButton.setAttribute("disabled", "true");    //...SE DESHABILITARÁ EL BOTÓN SIGUIENTE
@@ -147,11 +152,11 @@ function paginaSiguiente() {
             nextButton.setAttribute("href", listaPersonajes.links.next);
 
             cajaLista.innerHTML = "";
-            listaPersonajes.items.forEach((personaje) => {
+            listaPersonajes.items.forEach(personaje => {
                 mostrarListaPersonajes(personaje);
             });
         })
-        .catch((error) => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error));
+        .catch(error => console.log("ERROR AL OBTENER LA LISTA DE PERSONAJES", error));
 }
 
 mostrarPersonajesInicial(); //LLAMAMOS A ESTA FUNCIÓN AL INICIAR LA PÁGINA WEB
