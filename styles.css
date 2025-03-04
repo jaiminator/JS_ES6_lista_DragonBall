@@ -78,13 +78,23 @@ button,
     border-radius: 20px;
     background-color: #fbbc42;
 }
-img {
-    max-width: 200px;
-    max-height: 200px;
+.cajaPersonaje img,
+dialog img{
+    max-width: 230px;
+    max-height: 230px;
+    transition: max-width 0.5s, max-height 0.5s;
 }
-img:hover {
-    max-width: 250px;
-    max-height: 250px;
+.cajaPersonaje img:hover {
+    max-width: 300px;
+    max-height: 300px;
+}
+#dialog {
+    border-radius: 20px;
+    text-align: center;
+}
+#dialog > *{
+    max-width: 500px;
+    max-height: auto;
 }
 @media (max-width: 852px) {
     .cajaPersonaje {

@@ -40,8 +40,8 @@ function infoPersonaje(id) {
         .then(response => response.json())
         .then(data => {
             const dialog = document.getElementById("dialog"); 
-            const {name} = data.originPlanet;
-            dialog.innerHTML = "<p>ORIGIN PLANET: "+name+"</p><button onclick='dialog.close()'>Close</button>";
+            const {name, description, image} = data.originPlanet;
+            dialog.innerHTML = "<p><b>PERSONAJE: </b>"+data.name.toUpperCase()+"</p><p><b>PLANETA ORÍGEN: </b>"+name+"</p><p><b>DESCRIPCIÓN: </b>"+description+"</p><p><img src='"+image+"'/></p><button onclick='dialog.close()'>Close</button>";
             dialog.showModal(); 
         })
         .catch(error => console.log('ERROR AL OBTENER LA INFO DEL PERSONAJE', error));
@@ -57,6 +57,7 @@ function mostrarPersonajesInicial() {
         nextButton.removeAttribute("disabled");
         selectGender.value = "";
         selectRace.value = "";
+        selectAffiliation.value = "";
         nextButton.setAttribute("href", listaPersonajes.links.next); //ATRIBUTO 'href' AL BOTÓN SIGUIENTE
             listaPersonajes.items.forEach(personaje => {     //RECORREMOS PARA CADA 'personaje' DE 'listaPersonajes'
                 mostrarListaPersonajes(personaje);
