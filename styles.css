@@ -79,7 +79,7 @@ button,
     background-color: #fbbc42;
 }
 .cajaPersonaje img,
-dialog img{
+.dialog img{
     max-width: 230px;
     max-height: 230px;
     transition: max-width 0.5s, max-height 0.5s;
@@ -88,11 +88,11 @@ dialog img{
     max-width: 300px;
     max-height: 300px;
 }
-#dialog {
+.dialog {
     border-radius: 20px;
     text-align: center;
 }
-#dialog > *{
+.dialog > *{
     max-width: 500px;
     max-height: auto;
 }

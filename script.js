@@ -39,12 +39,36 @@ function infoPersonaje(id) {
     fetch("https://dragonball-api.com/api/characters/"+id)
         .then(response => response.json())
         .then(data => {
-            const dialog = document.getElementById("dialog"); 
+            const dialogInfo = document.getElementById("dialogInfo"); 
             const {name, description, image} = data.originPlanet;
-            dialog.innerHTML = "<p><b>PERSONAJE: </b>"+data.name.toUpperCase()+"</p><p><b>PLANETA ORÍGEN: </b>"+name+"</p><p><b>DESCRIPCIÓN: </b>"+description+"</p><p><img src='"+image+"'/></p><button onclick='dialog.close()'>Close</button>";
-            dialog.showModal(); 
+            dialogInfo.innerHTML =
+              "<p><b>PERSONAJE: </b>" +
+              data.name.toUpperCase() +
+              "</p><p><b>PLANETA ORÍGEN: </b>" +
+              name +
+              "</p><p><b>DESCRIPCIÓN: </b>" +
+              description +
+              "</p><p><img src='" +
+              image +
+              "'/></p><p><button onclick='dialogInfo.close()'>Close</button></p><p><button onclick='showTransformations("+id+")'>Show transformations</button></p>";
+            dialogInfo.showModal(); 
         })
         .catch(error => console.log('ERROR AL OBTENER LA INFO DEL PERSONAJE', error));
+}
+function showTransformations(id) {
+    fetch("https://dragonball-api.com/api/characters/"+id)
+        .then(response => response.json())
+        .then(data => {
+                const dialogTransformations = document.getElementById("dialogTransformations");
+                dialogTransformations.innerHTML = "";
+                data.transformations.forEach(data => {
+                    const {name, image} = data;
+                    dialogTransformations.innerHTML += "<p>"+name+"</p><img src="+image+"><br/>"
+                })
+                dialogTransformations.innerHTML += "<button onclick='dialogTransformations.close()'>Close</button>"
+                dialogTransformations.showModal();
+        })
+        .catch(error => console.log('ERROR AL OBTENER LAS TRANSFORMACIONES DEL PERSONAJE', error));
 }
 
 //MOSTRAMOS LA LISTA INICIAL CON LOS 10 PRIMEROS PERSONAJES
