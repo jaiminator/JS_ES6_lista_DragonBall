@@ -21,6 +21,8 @@ buttonFilter.addEventListener("click", mostrarPersonajesFiltrados);
 const buttonDeleteFilter = document.getElementById("buttonDeleteFilter");
 buttonDeleteFilter.addEventListener("click", mostrarPersonajesInicial);
 
+const API_URL = "https://dragonball-api.com/api/characters/";
+
 //MUESTRA GENERAL DE CONTENIDO
 //MOSTRAMOS EL CONTENIDO DE LOS PERSONAJES MEDIANTE EL PARÁMETRO data
 function mostrarListaPersonajes(data) {
@@ -36,7 +38,7 @@ function mostrarListaPersonajes(data) {
 }
 
 function infoPersonaje(id) {
-    fetch("https://dragonball-api.com/api/characters/"+id)
+    fetch(API_URL + id)
         .then(response => response.json())
         .then(data => {
             const dialogInfo = document.getElementById("dialogInfo"); 
@@ -56,7 +58,7 @@ function infoPersonaje(id) {
         .catch(error => console.log('ERROR AL OBTENER LA INFO DEL PERSONAJE', error));
 }
 function showTransformations(id) {
-    fetch("https://dragonball-api.com/api/characters/"+id)
+    fetch(API_URL + id)
         .then(response => response.json())
         .then(data => {
                 const dialogTransformations = document.getElementById("dialogTransformations");
@@ -73,7 +75,7 @@ function showTransformations(id) {
 
 //MOSTRAMOS LA LISTA INICIAL CON LOS 10 PRIMEROS PERSONAJES
 function mostrarPersonajesInicial() {
-    fetch("https://dragonball-api.com/api/characters?page=1&limit=10") //HACEMOS PETICIÓN API_FETCH A UNA URL
+    fetch(API_URL + "page=1&limit=10") //HACEMOS PETICIÓN API_FETCH A UNA URL
     .then(response => response.json())    //OBTENEMOS LA RESPUESTA Y LA DEVOLVEMOS EN FORMATO JSON
     .then(listaPersonajes => {    //MANIPULAMOS LOS DATOS DE LA RESPUESTA OBTENIDA
         cajaLista.innerHTML = "";
@@ -105,7 +107,7 @@ function mostrarPersonajesFiltrados() {
     if (selectAffiliation.value) {
         filters += "&affiliation="+encoredAffiliation;
     }
-    fetch("https://dragonball-api.com/api/characters?"+filters)
+    fetch(API_URL + filters)
         .then(response => response.json())
         .then(data => {
             cajaLista.innerHTML = "";
@@ -128,9 +130,7 @@ function mostrarPersonajesFiltrados() {
 //BÚSQUEDA
 //MOSTRAMOS LA LISTA DE PERSONAJES SEGÚN LO INTRODUCIDO EN EL CUADRO DE BÚSQUEDA
 function buscarPersonajes() {
-    fetch(
-        "https://dragonball-api.com/api/characters?name=" + inputBusqueda.value
-    )
+    fetch(API_URL + "?name=" + inputBusqueda.value)
         .then(response => response.json())
         .then(data => {
             if (inputBusqueda.value != "") {
