@@ -21,7 +21,7 @@ buttonFilter.addEventListener("click", mostrarPersonajesFiltrados);
 const buttonDeleteFilter = document.getElementById("buttonDeleteFilter");
 buttonDeleteFilter.addEventListener("click", mostrarPersonajesInicial);
 
-const API_URL = "https://dragonball-api.com/api/characters/";
+const API_URL = "https://dragonball-api.com/api/characters";
 
 //MUESTRA GENERAL DE CONTENIDO
 //MOSTRAMOS EL CONTENIDO DE LOS PERSONAJES MEDIANTE EL PARÁMETRO data
@@ -75,7 +75,7 @@ function showTransformations(id) {
 
 //MOSTRAMOS LA LISTA INICIAL CON LOS 10 PRIMEROS PERSONAJES
 function mostrarPersonajesInicial() {
-    fetch(API_URL + "page=1&limit=10") //HACEMOS PETICIÓN API_FETCH A UNA URL
+    fetch(API_URL + "?page=1&limit=10") //HACEMOS PETICIÓN API_FETCH A UNA URL
     .then(response => response.json())    //OBTENEMOS LA RESPUESTA Y LA DEVOLVEMOS EN FORMATO JSON
     .then(listaPersonajes => {    //MANIPULAMOS LOS DATOS DE LA RESPUESTA OBTENIDA
         cajaLista.innerHTML = "";
@@ -99,13 +99,13 @@ function mostrarPersonajesFiltrados() {
     const encoredAffiliation = encodeURIComponent(selectAffiliation.value);
     let filters = "";
     if (selectGender.value) {
-        filters += "&gender="+selectGender.value;
+        filters += "?gender="+selectGender.value;
     }
     if (selectRace.value) {
-        filters += "&race="+encoredRace;
+        filters += "?race="+encoredRace;
     } 
     if (selectAffiliation.value) {
-        filters += "&affiliation="+encoredAffiliation;
+        filters += "?affiliation="+encoredAffiliation;
     }
     fetch(API_URL + filters)
         .then(response => response.json())
