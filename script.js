@@ -38,7 +38,7 @@ function mostrarListaPersonajes(data) {
 }
 
 function infoPersonaje(id) {
-    fetch(API_URL + id)
+    fetch(API_URL +"/"+ id)
         .then(response => response.json())
         .then(data => {
             const dialogInfo = document.getElementById("dialogInfo"); 
@@ -58,7 +58,7 @@ function infoPersonaje(id) {
         .catch(error => console.log('ERROR AL OBTENER LA INFO DEL PERSONAJE', error));
 }
 function showTransformations(id) {
-    fetch(API_URL + id)
+    fetch(API_URL +"/"+ id)
         .then(response => response.json())
         .then(data => {
                 const dialogTransformations = document.getElementById("dialogTransformations");
